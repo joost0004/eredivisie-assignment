@@ -18,7 +18,7 @@ class Game
     private ?int $externalId = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $utcDate = null;
+    private ?\DateTimeImmutable $kickoffUtc = null;
 
     #[ORM\Column]
     private ?int $matchday = null;
@@ -57,14 +57,22 @@ class Game
         return $this;
     }
 
-    public function getUtcDate(): ?\DateTimeImmutable
+    public function getKickoffUtc(): ?\DateTimeImmutable
     {
-        return $this->utcDate;
+        // the column stores UTC without a zone
+        return $this->kickoffUtc
+            ? new \DateTimeImmutable($this->kickoffUtc->format('Y-m-d H:i:s'), new \DateTimeZone('UTC'))
+            : null;
     }
 
-    public function setUtcDate(\DateTimeImmutable $utcDate): static
+    public function setKickoffUtc(\DateTimeImmutable $kickoffUtc): static
     {
-        $this->utcDate = $utcDate;
+        $kickoffUtc = $kickoffUtc->setTimezone(new \DateTimeZone('UTC'));
+
+        // doctrine compares dates by instance
+        if ($this->kickoffUtc?->format('Y-m-d H:i:s') !== $kickoffUtc->format('Y-m-d H:i:s')) {
+            $this->kickoffUtc = $kickoffUtc;
+        }
 
         return $this;
     }
