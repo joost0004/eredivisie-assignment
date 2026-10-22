@@ -1,3 +1,83 @@
-body {
-    background-color: skyblue;
+:root {
+    --font-heading: "Barlow Condensed", system-ui, sans-serif;
+
+    --bs-body-font-family: "Barlow", system-ui, sans-serif;
+    --bs-body-font-size: 0.9375rem;
+    --bs-body-bg: #f2f2f3;
+    --bs-body-bg-rgb: 242, 242, 243;
+    --bs-body-color: #1d1f20;
+    --bs-body-color-rgb: 29, 31, 32;
+    --bs-emphasis-color: #1d1f20;
+    --bs-secondary-color: #5d5d60;
+    --bs-tertiary-bg: #e9e9ea;
+    --bs-border-color: rgba(29, 31, 32, .16);
+
+    --bs-primary: #416180;
+    --bs-primary-rgb: 65, 97, 128;
+    --bs-primary-bg-subtle: #eef6ff;
+    --bs-primary-text-emphasis: #2c455d;
+    --bs-primary-border-subtle: #416180;
+    --bs-secondary: #5d5d60;
+    --bs-secondary-rgb: 93, 93, 96;
+    --bs-success: #2e6b43;
+    --bs-success-rgb: 46, 107, 67;
+    --bs-success-bg-subtle: oklch(0.95 0.03 150);
+    --bs-success-text-emphasis: oklch(0.38 0.08 150);
+    --bs-success-border-subtle: oklch(0.5 0.1 150 / 0.4);
+    --bs-danger: #9e3b3b;
+    --bs-danger-rgb: 158, 59, 59;
+    --bs-danger-bg-subtle: oklch(0.95 0.03 25);
+    --bs-danger-text-emphasis: oklch(0.42 0.12 25);
+    --bs-danger-border-subtle: oklch(0.5 0.13 25 / 0.4);
+
+    --bs-link-color: #416180;
+    --bs-link-color-rgb: 65, 97, 128;
+    --bs-link-hover-color: #2c455d;
+    --bs-link-hover-color-rgb: 44, 69, 93;
+
+    --bs-border-radius: 0;
+    --bs-border-radius-sm: 0;
+    --bs-border-radius-lg: 0;
+    --bs-border-radius-xl: 0;
+    --bs-border-radius-xxl: 0;
+    --bs-border-radius-pill: 0;
+}
+
+h1, h2, h3, h4, h5, h6, .btn, .navbar-brand {
+    font-family: var(--font-heading);
+    font-weight: 600;
+}
+
+h1, h2, h3 {
+    letter-spacing: -0.015em;
+}
+
+h1 {
+    font-size: 2.5rem;
+}
+
+.btn {
+    --bs-btn-font-size: 1rem;
+}
+
+.btn-primary {
+    --bs-btn-bg: #416180;
+    --bs-btn-border-color: #416180;
+    --bs-btn-hover-bg: #2c455d;
+    --bs-btn-hover-border-color: #2c455d;
+    --bs-btn-active-bg: #2c455d;
+    --bs-btn-active-border-color: #2c455d;
+    --bs-btn-disabled-bg: #416180;
+    --bs-btn-disabled-border-color: #416180;
+}
+
+.btn-outline-secondary {
+    --bs-btn-color: var(--bs-body-color);
+    --bs-btn-border-color: var(--bs-border-color);
+    --bs-btn-hover-color: var(--bs-body-color);
+    --bs-btn-hover-bg: rgba(29, 31, 32, .07);
+    --bs-btn-hover-border-color: var(--bs-border-color);
+    --bs-btn-active-color: var(--bs-body-color);
+    --bs-btn-active-bg: rgba(29, 31, 32, .14);
+    --bs-btn-active-border-color: var(--bs-border-color);
 }
