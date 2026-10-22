@@ -81,3 +81,14 @@ h1 {
     --bs-btn-active-bg: rgba(29, 31, 32, .14);
     --bs-btn-active-border-color: var(--bs-border-color);
 }
+
+.result-badge {
+    display: inline-grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 600;
+}

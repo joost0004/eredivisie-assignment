@@ -1,0 +1,33 @@
+{% set is_next = game.id == next_id %}
+<li class="list-group-item{{ is_next ? ' list-group-item-primary border border-primary' }}"{% if is_next %} id="next"{% endif %}>
+    {% if is_next %}
+        <div class="small text-uppercase fw-bold mb-1">Next match</div>
+    {% endif %}
+    <div class="row g-2 align-items-center">
+        <div class="col-3 col-sm-2 small lh-sm">
+            <div class="fw-medium">{{ game.kickoffUtc|date('D j M') }}</div>
+            <div class="text-body-secondary">MD {{ game.matchday }}</div>
+        </div>
+        <div class="col">
+            {% for side in [{team: game.homeTeam, score: game.homeScore}, {team: game.awayTeam, score: game.awayScore}] %}
+                <div class="d-flex align-items-center gap-2">
+                    <img class="object-fit-contain" src="{{ side.team.crestUrl }}" alt="" width="20" height="20">
+                    <span class="flex-grow-1 text-truncate{{ side.team.id == team.id ? ' fw-semibold' }}">{{ side.team.shortName }}</span>
+                    <span class="fw-semibold">{{ side.score }}</span>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="col-3 col-sm-2 text-end">
+            {% set result = game.resultFor(team) %}
+            {% if result %}
+                {{ include('team/_result_badge.html.twig') }}
+            {% elseif game.status.isLive %}
+                <span class="badge text-bg-primary">Live</span>
+            {% elseif game.status.isUpcoming %}
+                <span class="fw-semibold">{{ game.kickoffUtc|date('H:i') }}</span>
+            {% else %}
+                <span class="badge border text-body-secondary">{{ game.status.name }}</span>
+            {% endif %}
+        </div>
+    </div>
+</li>

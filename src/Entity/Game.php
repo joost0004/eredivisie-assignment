@@ -148,4 +148,21 @@ class Game
 
         return $this;
     }
+
+    public function resultFor(Team $team): ?string
+    {
+        if (!$this->status->isFinished()) {
+            return null;
+        }
+
+        $isHome = $team === $this->homeTeam;
+        $for = $isHome ? $this->homeScore : $this->awayScore;
+        $against = $isHome ? $this->awayScore : $this->homeScore;
+
+        return match ($for <=> $against) {
+            1 => 'Win',
+            0 => 'Draw',
+            -1 => 'Loss',
+        };
+    }
 }

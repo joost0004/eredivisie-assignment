@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ team.name }} · Fulltime{% endblock %}
+
+{% block body %}
+    <div class="row g-4 align-items-start">
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-body p-4 d-flex flex-column gap-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <img class="object-fit-contain flex-shrink-0" src="{{ team.crestUrl }}" alt="" width="96" height="96">
+                        <div>
+                            <h1 class="mb-0 lh-1">{{ team.name }}</h1>
+                            <div class="small text-body-secondary">{{ team.shortName }} · Eredivisie</div>
+                        </div>
+                    </div>
+                    <dl class="row small mb-0">
+                        <dt class="col-4 fw-normal text-body-secondary">Venue</dt>
+                        <dd class="col-8">{{ team.venue }}</dd>
+                        <dt class="col-4 fw-normal text-body-secondary">Founded</dt>
+                        <dd class="col-8">{{ team.founded }}</dd>
+                        <dt class="col-4 fw-normal text-body-secondary">Colours</dt>
+                        <dd class="col-8">{{ team.clubColors }}</dd>
+                        <dt class="col-4 fw-normal text-body-secondary">Website</dt>
+                        <dd class="col-8 mb-0 text-break"><a href="{{ team.websiteUrl }}">{{ team.websiteUrl }}</a></dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="d-flex justify-content-between align-items-baseline flex-wrap gap-2">
+                <h2 class="mb-0">Matches</h2>
+                {% if next_id %}
+                    <a href="#next" class="small">Jump to next match ↓</a>
+                {% endif %}
+            </div>
+
+            {% for section in [{title: 'Results', games: results}, {title: 'Fixtures', games: fixtures}] %}
+                {% if section.games %}
+                    <h3 class="h6 text-uppercase text-body-secondary border-bottom pb-2 mt-4 mb-0">
+                        {{ section.title }} <span class="fw-normal">· {{ section.games|length }}</span>
+                    </h3>
+                    <ul class="list-group list-group-flush">
+                        {% for game in section.games %}
+                            {{ include('team/_match_row.html.twig') }}
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endfor %}
+
+            {% if not results and not fixtures %}
+                <p class="text-body-secondary mt-3">No matches imported yet.</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
