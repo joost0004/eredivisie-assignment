@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -29,6 +31,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     private ?string $password = null;
+
+    /**
+     * @var Collection<int, Team>
+     */
+    #[ORM\ManyToMany(targetEntity: Team::class)]
+    #[ORM\OrderBy(['name' => 'ASC'])]
+    private Collection $followedTeams;
+
+    public function __construct()
+    {
+        $this->followedTeams = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -75,6 +89,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): static
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Team>
+     */
+    public function getFollowedTeams(): Collection
+    {
+        return $this->followedTeams;
+    }
+
+    public function isFollowing(Team $team): bool
+    {
+        return $this->followedTeams->contains($team);
+    }
+
+    public function follow(Team $team): static
+    {
+        if (!$this->followedTeams->contains($team)) {
+            $this->followedTeams->add($team);
+        }
+
+        return $this;
+    }
+
+    public function unfollow(Team $team): static
+    {
+        $this->followedTeams->removeElement($team);
 
         return $this;
     }

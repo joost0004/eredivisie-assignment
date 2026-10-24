@@ -24,6 +24,21 @@
                         <dt class="col-4 fw-normal text-body-secondary">Website</dt>
                         <dd class="col-8 mb-0 text-break"><a href="{{ team.websiteUrl }}">{{ team.websiteUrl }}</a></dd>
                     </dl>
+                    {% if app.user %}
+                        <form method="post" action="{{ path('app_team_follow', {id: team.id}) }}">
+                            <input type="hidden" name="_token" value="{{ csrf_token('follow' ~ team.id) }}">
+                            {% if app.user.isFollowing(team) %}
+                                <button class="btn btn-outline-secondary w-100">- Unfollow</button>
+                            {% else %}
+                                <button class="btn btn-primary w-100">+ Follow</button>
+                            {% endif %}
+                        </form>
+                    {% else %}
+                        <div>
+                            <a href="{{ path('app_team_follow', {id: team.id}) }}" class="btn btn-primary w-100">+ Follow</a>
+                            <div class="small text-body-secondary mt-2">You'll be asked to log in first.</div>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

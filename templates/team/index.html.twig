@@ -20,6 +20,9 @@
                             <h2 class="h5 mb-0">
                                 <a href="{{ path('app_team_show', {id: team.id}) }}" class="stretched-link link-body-emphasis text-decoration-none">{{ team.name }}</a>
                             </h2>
+                            {% if app.user and app.user.isFollowing(team) %}
+                                <span class="badge text-bg-primary mt-auto">✓ Following</span>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
