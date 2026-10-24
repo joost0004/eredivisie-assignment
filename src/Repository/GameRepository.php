@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Game;
 use App\Entity\Team;
+use App\Enum\GameStatus;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -28,5 +29,28 @@ class GameRepository extends ServiceEntityRepository
             ->orderBy('game.kickoffUtc', 'ASC')
             ->getQuery()
             ->getResult();
+    }
+
+    public function findLatestFinishedForTeam(Team $team): ?Game
+    {
+        return $this->findOneForTeam($team, [GameStatus::Finished, GameStatus::Awarded], 'DESC');
+    }
+
+    public function findNextForTeam(Team $team): ?Game
+    {
+        return $this->findOneForTeam($team, [GameStatus::Scheduled, GameStatus::Timed], 'ASC');
+    }
+
+    private function findOneForTeam(Team $team, array $statuses, string $order): ?Game
+    {
+        return $this->createQueryBuilder('game')
+            ->where('game.homeTeam = :team OR game.awayTeam = :team')
+            ->andWhere('game.status IN (:statuses)')
+            ->setParameter('team', $team)
+            ->setParameter('statuses', $statuses)
+            ->orderBy('game.kickoffUtc', $order)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 }

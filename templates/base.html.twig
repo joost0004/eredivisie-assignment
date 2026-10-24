@@ -19,12 +19,13 @@
                 </a>
                 <ul class="navbar-nav flex-row gap-4 me-auto">
                     <li class="nav-item">
-                        {% if app.request.attributes.get('_route') starts with 'app_team' %}
-                            <a class="nav-link active" href="{{ path('app_team_index') }}">Teams</a>
-                        {% else %}
-                            <a class="nav-link" href="{{ path('app_team_index') }}">Teams</a>
-                        {% endif %}
+                        <a class="nav-link{{ app.current_route starts with 'app_team' ? ' active' }}" href="{{ path('app_team_index') }}">Teams</a>
                     </li>
+                    {% if app.user %}
+                        <li class="nav-item">
+                            <a class="nav-link{{ app.current_route == 'app_my_teams' ? ' active' }}" href="{{ path('app_my_teams') }}">My teams</a>
+                        </li>
+                    {% endif %}
                 </ul>
                 <div class="d-flex align-items-center gap-3">
                     {% if app.user %}
