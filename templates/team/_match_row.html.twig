@@ -12,13 +12,13 @@
             {% for side in [{team: game.homeTeam, score: game.homeScore}, {team: game.awayTeam, score: game.awayScore}] %}
                 <div class="d-flex align-items-center gap-2">
                     <img class="object-fit-contain" src="{{ side.team.crestUrl }}" alt="" width="20" height="20">
-                    <span class="flex-grow-1 text-truncate{{ side.team.id == team.id ? ' fw-semibold' }}">{{ side.team.shortName }}</span>
+                    <span class="flex-grow-1 text-truncate{{ team and side.team.id == team.id ? ' fw-semibold' }}">{{ side.team.shortName }}</span>
                     <span class="fw-semibold">{{ side.score }}</span>
                 </div>
             {% endfor %}
         </div>
         <div class="col-3 col-sm-2 text-end">
-            {% set result = game.resultFor(team) %}
+            {% set result = team ? game.resultFor(team) %}
             {% if result %}
                 {{ include('team/_result_badge.html.twig') }}
             {% elseif game.status.isLive %}

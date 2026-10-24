@@ -6,6 +6,7 @@ use App\Entity\Game;
 use App\Entity\Team;
 use App\Enum\GameStatus;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -29,6 +30,22 @@ class GameRepository extends ServiceEntityRepository
             ->orderBy('game.kickoffUtc', 'ASC')
             ->getQuery()
             ->getResult();
+    }
+
+    public function findUpcoming(int $page, int $perPage): Paginator
+    {
+        $query = $this->createQueryBuilder('game')
+            ->addSelect('homeTeam', 'awayTeam')
+            ->join('game.homeTeam', 'homeTeam')
+            ->join('game.awayTeam', 'awayTeam')
+            ->where('game.status IN (:statuses)')
+            ->setParameter('statuses', [GameStatus::Scheduled, GameStatus::Timed])
+            ->orderBy('game.kickoffUtc', 'ASC')
+            ->setFirstResult(($page - 1) * $perPage)
+            ->setMaxResults($perPage)
+            ->getQuery();
+
+        return new Paginator($query, fetchJoinCollection: false);
     }
 
     public function findLatestFinishedForTeam(Team $team): ?Game

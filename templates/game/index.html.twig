@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Matches · Fulltime{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-between align-items-baseline flex-wrap gap-2 mb-4">
+        <h1 class="mb-0">Matches</h1>
+        <span class="small text-body-secondary">Upcoming · {{ total }} matches</span>
+    </div>
+
+    {% if total %}
+        <ul class="list-group">
+            {% for game in games %}
+                {{ include('team/_match_row.html.twig', {team: null, next_id: null}) }}
+            {% endfor %}
+        </ul>
+
+        {% if pages > 1 %}
+            <nav class="mt-4">
+                <ul class="pagination flex-wrap justify-content-center">
+                    <li class="page-item{{ page == 1 ? ' disabled' }}">
+                        <a class="page-link" href="{{ path('app_game_index', {page: page - 1}) }}">Previous</a>
+                    </li>
+                    {% for number in 1..pages %}
+                        <li class="page-item{{ number == page ? ' active' }}">
+                            <a class="page-link" href="{{ path('app_game_index', {page: number}) }}">{{ number }}</a>
+                        </li>
+                    {% endfor %}
+                    <li class="page-item{{ page == pages ? ' disabled' }}">
+                        <a class="page-link" href="{{ path('app_game_index', {page: page + 1}) }}">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        {% endif %}
+    {% else %}
+        <div class="col-md-8 col-lg-6 mx-auto border text-center p-5">
+            <h2>No upcoming matches</h2>
+            <p class="text-body-secondary">Either the season is over or the matches haven't been imported yet.</p>
+            <p><code>php bin/console app:import</code></p>
+            <a href="{{ path('app_game_index') }}" class="btn btn-outline-secondary">Reload</a>
+        </div>
+    {% endif %}
+{% endblock %}
