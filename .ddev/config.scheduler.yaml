@@ -1,0 +1,5 @@
+# runs the Symfony Scheduler worker (app:import every 15 minutes); restarted every hour to free memory
+web_extra_daemons:
+  - name: scheduler
+    command: php bin/console messenger:consume scheduler_default --time-limit=3600
+    directory: /var/www/html
