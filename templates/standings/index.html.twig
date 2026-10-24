@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Standings · Fulltime{% endblock %}
+
+{% block body %}
+    <h1 class="mb-4">Standings</h1>
+
+    {% if rows %}
+        <div class="table-responsive border bg-body">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                    <tr class="small text-uppercase text-body-secondary">
+                        <th class="text-end fw-medium">#</th>
+                        <th class="fw-medium">Team</th>
+                        <th class="text-end fw-medium">P</th>
+                        <th class="text-end fw-medium d-none d-md-table-cell">W</th>
+                        <th class="text-end fw-medium d-none d-md-table-cell">D</th>
+                        <th class="text-end fw-medium d-none d-md-table-cell">L</th>
+                        <th class="text-end fw-medium d-none d-md-table-cell">GF</th>
+                        <th class="text-end fw-medium d-none d-md-table-cell">GA</th>
+                        <th class="text-end fw-medium">GD</th>
+                        <th class="text-end fw-medium">Pts</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in rows %}
+                        <tr{% if app.user and app.user.isFollowing(row.team) %} class="table-primary"{% endif %}>
+                            <td class="text-end text-body-secondary">{{ loop.index }}</td>
+                            <td>
+                                <a href="{{ path('app_team_show', {id: row.team.id}) }}" class="d-flex align-items-center gap-2 link-body-emphasis text-decoration-none">
+                                    <img class="object-fit-contain" src="{{ row.team.crestUrl }}" alt="" width="20" height="20">
+                                    <span class="text-truncate">{{ row.team.name }}</span>
+                                </a>
+                            </td>
+                            <td class="text-end">{{ row.played }}</td>
+                            <td class="text-end d-none d-md-table-cell">{{ row.won }}</td>
+                            <td class="text-end d-none d-md-table-cell">{{ row.drawn }}</td>
+                            <td class="text-end d-none d-md-table-cell">{{ row.lost }}</td>
+                            <td class="text-end d-none d-md-table-cell">{{ row.goalsFor }}</td>
+                            <td class="text-end d-none d-md-table-cell">{{ row.goalsAgainst }}</td>
+                            <td class="text-end">{{ row.goalDifference > 0 ? '+' }}{{ row.goalDifference }}</td>
+                            <td class="text-end fw-semibold">{{ row.points }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="col-md-8 col-lg-6 mx-auto border text-center p-5">
+            <h2>No standings yet</h2>
+            <p class="text-body-secondary">Import the teams and matches first, then reload this page.</p>
+            <p><code>php bin/console app:import</code></p>
+            <a href="{{ path('app_standings') }}" class="btn btn-outline-secondary">Reload</a>
+        </div>
+    {% endif %}
+{% endblock %}

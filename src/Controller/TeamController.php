@@ -29,7 +29,7 @@ class TeamController extends AbstractController
     public function show(Team $team, GameRepository $gameRepository): Response
     {
         $games = $gameRepository->findForTeam($team);
-        $results = array_filter($games, fn (Game $game) => $game->getStatus()->isFinished());
+        $results = array_reverse(array_filter($games, fn (Game $game) => $game->getStatus()->isFinished()));
         $fixtures = array_filter($games, fn (Game $game) => !$game->getStatus()->isFinished());
         $upcoming = array_filter($fixtures, fn (Game $game) => $game->getStatus()->isUpcoming());
         $next = reset($upcoming) ?: null;
