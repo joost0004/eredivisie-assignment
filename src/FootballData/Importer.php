@@ -58,6 +58,7 @@ class Importer
             }
 
             $game
+                ->setSeasonExternalId($data['season']['id'])
                 ->setKickoffUtc(new \DateTimeImmutable($data['utcDate']))
                 ->setMatchday($data['matchday'])
                 ->setStatus(GameStatus::from($data['status']))

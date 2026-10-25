@@ -99,6 +99,7 @@ class ImporterTest extends KernelTestCase
     {
         return new JsonMockResponse(['matches' => [[
             'id' => 100,
+            'season' => ['id' => 2493],
             'utcDate' => '2026-08-07T18:00:00Z',
             'matchday' => 1,
             'status' => 'FINISHED',

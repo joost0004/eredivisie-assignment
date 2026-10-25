@@ -14,8 +14,10 @@ class StandingsController extends AbstractController
     #[Route('/standings', name: 'app_standings')]
     public function index(TeamRepository $teams, GameRepository $games, StandingsCalculator $calculator): Response
     {
+        $season = $games->findCurrentSeasonId();
+
         return $this->render('standings/index.html.twig', [
-            'rows' => $calculator->calculate($teams->findAll(), $games->findAll()),
+            'rows' => $calculator->calculate($teams->findBySeason($season), $games->findBy(['seasonExternalId' => $season])),
         ]);
     }
 }

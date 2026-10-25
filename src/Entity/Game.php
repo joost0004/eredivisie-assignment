@@ -19,6 +19,9 @@ class Game
     private ?int $externalId = null;
 
     #[ORM\Column]
+    private ?int $seasonExternalId = null;
+
+    #[ORM\Column]
     private ?\DateTimeImmutable $kickoffUtc = null;
 
     #[ORM\Column]
@@ -54,6 +57,18 @@ class Game
     public function setExternalId(int $externalId): static
     {
         $this->externalId = $externalId;
+
+        return $this;
+    }
+
+    public function getSeasonExternalId(): ?int
+    {
+        return $this->seasonExternalId;
+    }
+
+    public function setSeasonExternalId(int $seasonExternalId): static
+    {
+        $this->seasonExternalId = $seasonExternalId;
 
         return $this;
     }

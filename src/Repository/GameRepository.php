@@ -19,14 +19,26 @@ class GameRepository extends ServiceEntityRepository
         parent::__construct($registry, Game::class);
     }
 
-    public function findForTeam(Team $team): array
+    public function findCurrentSeasonId(): ?int
+    {
+        $id = $this->createQueryBuilder('game')
+            ->select('MAX(game.seasonExternalId)')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $id === null ? null : (int) $id;
+    }
+
+    public function findForTeam(Team $team, ?int $season): array
     {
         return $this->createQueryBuilder('game')
             ->addSelect('homeTeam', 'awayTeam')
             ->join('game.homeTeam', 'homeTeam')
             ->join('game.awayTeam', 'awayTeam')
             ->where('homeTeam = :team OR awayTeam = :team')
+            ->andWhere('game.seasonExternalId = :season')
             ->setParameter('team', $team)
+            ->setParameter('season', $season)
             ->orderBy('game.kickoffUtc', 'ASC')
             ->getQuery()
             ->getResult();

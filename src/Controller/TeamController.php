@@ -18,17 +18,17 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class TeamController extends AbstractController
 {
     #[Route('/teams', name: 'app_team_index')]
-    public function index(TeamRepository $teams): Response
+    public function index(TeamRepository $teams, GameRepository $games): Response
     {
         return $this->render('team/index.html.twig', [
-            'teams' => $teams->findBy([], ['name' => 'ASC']),
+            'teams' => $teams->findBySeason($games->findCurrentSeasonId()),
         ]);
     }
 
     #[Route('/teams/{id}', name: 'app_team_show')]
     public function show(Team $team, GameRepository $gameRepository): Response
     {
-        $games = $gameRepository->findForTeam($team);
+        $games = $gameRepository->findForTeam($team, $gameRepository->findCurrentSeasonId());
         $results = array_reverse(array_filter($games, fn (Game $game) => $game->getStatus()->isFinished()));
         $fixtures = array_filter($games, fn (Game $game) => !$game->getStatus()->isFinished());
         $upcoming = array_filter($fixtures, fn (Game $game) => $game->getStatus()->isUpcoming());
