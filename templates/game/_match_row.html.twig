@@ -20,7 +20,7 @@
         <div class="col-3 col-sm-2 text-end">
             {% set result = team ? game.resultFor(team) %}
             {% if result %}
-                {{ include('team/_result_badge.html.twig') }}
+                {{ include('game/_result_badge.html.twig') }}
             {% elseif game.status.isLive %}
                 <span class="badge text-bg-primary">Live</span>
             {% elseif game.status.isUpcoming %}

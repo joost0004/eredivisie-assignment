@@ -11,7 +11,7 @@
     {% if total %}
         <ul class="list-group">
             {% for game in games %}
-                {{ include('team/_match_row.html.twig', {team: null, next_id: null}) }}
+                {{ include('game/_match_row.html.twig', {team: null, next_id: null}) }}
             {% endfor %}
         </ul>
 

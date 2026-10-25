@@ -36,7 +36,7 @@
                                         {% if row.played %}
                                             <span class="fs-4 fw-semibold">{{ game.homeScore }}–{{ game.awayScore }}</span>
                                             {% set result = game.resultFor(team) %}
-                                            {{ include('team/_result_badge.html.twig') }}
+                                            {{ include('game/_result_badge.html.twig') }}
                                         {% else %}
                                             <span class="fs-4 fw-semibold">{{ game.status.name == 'Scheduled' ? 'TBC' : game.kickoffUtc|date('H:i') }}</span>
                                         {% endif %}
