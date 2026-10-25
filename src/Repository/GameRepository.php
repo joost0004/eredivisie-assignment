@@ -39,7 +39,7 @@ class GameRepository extends ServiceEntityRepository
             ->join('game.homeTeam', 'homeTeam')
             ->join('game.awayTeam', 'awayTeam')
             ->where('game.status IN (:statuses)')
-            ->setParameter('statuses', [GameStatus::Scheduled, GameStatus::Timed])
+            ->setParameter('statuses', GameStatus::upcoming())
             ->orderBy('game.kickoffUtc', 'ASC')
             ->setFirstResult(($page - 1) * $perPage)
             ->setMaxResults($perPage)
@@ -50,12 +50,12 @@ class GameRepository extends ServiceEntityRepository
 
     public function findLatestFinishedForTeam(Team $team): ?Game
     {
-        return $this->findOneForTeam($team, [GameStatus::Finished, GameStatus::Awarded], 'DESC');
+        return $this->findOneForTeam($team, GameStatus::finished(), 'DESC');
     }
 
     public function findNextForTeam(Team $team): ?Game
     {
-        return $this->findOneForTeam($team, [GameStatus::Scheduled, GameStatus::Timed], 'ASC');
+        return $this->findOneForTeam($team, GameStatus::upcoming(), 'ASC');
     }
 
     private function findOneForTeam(Team $team, array $statuses, string $order): ?Game

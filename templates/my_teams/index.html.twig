@@ -38,7 +38,7 @@
                                             {% set result = game.resultFor(team) %}
                                             {{ include('game/_result_badge.html.twig') }}
                                         {% else %}
-                                            <span class="fs-4 fw-semibold">{{ game.status.name == 'Scheduled' ? 'TBC' : game.kickoffUtc|date('H:i') }}</span>
+                                            <span class="fs-4 fw-semibold">{{ game.status.isTimed ? game.kickoffUtc|date('H:i') : 'TBC' }}</span>
                                         {% endif %}
                                     </div>
                                 </div>

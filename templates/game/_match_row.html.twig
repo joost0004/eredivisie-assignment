@@ -24,7 +24,7 @@
             {% elseif game.status.isLive %}
                 <span class="badge text-bg-primary">Live</span>
             {% elseif game.status.isUpcoming %}
-                <span class="fw-semibold">{{ game.status.name == 'Scheduled' ? 'TBC' : game.kickoffUtc|date('H:i') }}</span>
+                <span class="fw-semibold">{{ game.status.isTimed ? game.kickoffUtc|date('H:i') : 'TBC' }}</span>
             {% else %}
                 <span class="badge border text-body-secondary">{{ game.status.name }}</span>
             {% endif %}

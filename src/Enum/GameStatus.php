@@ -16,9 +16,19 @@ enum GameStatus: string
     case Cancelled = 'CANCELLED';
     case Awarded = 'AWARDED';
 
+    public static function finished(): array
+    {
+        return [self::Finished, self::Awarded];
+    }
+
+    public static function upcoming(): array
+    {
+        return [self::Scheduled, self::Timed];
+    }
+
     public function isFinished(): bool
     {
-        return $this === self::Finished || $this === self::Awarded;
+        return in_array($this, self::finished(), true);
     }
 
     public function isLive(): bool
@@ -28,6 +38,11 @@ enum GameStatus: string
 
     public function isUpcoming(): bool
     {
-        return $this === self::Scheduled || $this === self::Timed;
+        return in_array($this, self::upcoming(), true);
+    }
+
+    public function isTimed(): bool
+    {
+        return $this === self::Timed;
     }
 }
