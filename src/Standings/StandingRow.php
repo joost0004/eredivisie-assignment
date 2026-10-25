@@ -3,6 +3,7 @@
 namespace App\Standings;
 
 use App\Entity\Team;
+use App\Enum\GameResult;
 
 class StandingRow
 {
@@ -23,10 +24,10 @@ class StandingRow
         $this->goalsFor += $for;
         $this->goalsAgainst += $against;
 
-        match ($for <=> $against) {
-            1 => ++$this->won,
-            0 => ++$this->drawn,
-            -1 => ++$this->lost,
+        match (GameResult::fromScore($for, $against)) {
+            GameResult::Win => ++$this->won,
+            GameResult::Draw => ++$this->drawn,
+            GameResult::Loss => ++$this->lost,
         };
     }
 

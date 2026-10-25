@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\GameResult;
 use App\Enum\GameStatus;
 use App\Repository\GameRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -149,7 +150,12 @@ class Game
         return $this;
     }
 
-    public function resultFor(Team $team): ?string
+    public function opponentOf(Team $team): Team
+    {
+        return $team === $this->homeTeam ? $this->awayTeam : $this->homeTeam;
+    }
+
+    public function resultFor(Team $team): ?GameResult
     {
         if (!$this->status->isFinished()) {
             return null;
@@ -159,10 +165,6 @@ class Game
         $for = $isHome ? $this->homeScore : $this->awayScore;
         $against = $isHome ? $this->awayScore : $this->homeScore;
 
-        return match ($for <=> $against) {
-            1 => 'Win',
-            0 => 'Draw',
-            -1 => 'Loss',
-        };
+        return GameResult::fromScore($for, $against);
     }
 }

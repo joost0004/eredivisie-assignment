@@ -29,7 +29,7 @@
                                 <div class="d-flex justify-content-between align-items-center gap-3">
                                     <div class="overflow-hidden">
                                         {% set is_home = game.homeTeam.id == team.id %}
-                                        <div class="fw-medium text-truncate">{{ is_home ? 'vs' : 'at' }} {{ is_home ? game.awayTeam.name : game.homeTeam.name }}</div>
+                                        <div class="fw-medium text-truncate">{{ is_home ? 'vs' : 'at' }} {{ game.opponentOf(team).name }}</div>
                                         <div class="small text-body-secondary">{{ game.kickoffUtc|date('D j M') }} · MD {{ game.matchday }}</div>
                                     </div>
                                     <div class="d-flex align-items-center gap-2 flex-shrink-0">
